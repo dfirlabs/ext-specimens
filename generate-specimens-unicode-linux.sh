@@ -80,7 +80,9 @@ SPECIMENS_PATH="specimens/mke2fs";
 
 if ! test -f "UnicodeData.txt";
 then
-	echo "Missing UnicodeData.txt file.";
+	echo "Missing UnicodeData.txt file. UnicodeData.txt can be obtained from "
+	echo "unicode.org make sure you have a local copy in the current working ";
+	echo "directory.";
 
 	exit ${EXIT_FAILURE};
 fi

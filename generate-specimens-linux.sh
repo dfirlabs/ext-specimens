@@ -223,11 +223,25 @@ create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_inode_256.raw" 
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_inode_512.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal" "-t ext4" "-I 512";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_inode_1024.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal" "-t ext4" "-I 1024";
 
+# Create an ext4 file system with large extended attribute values
+create_test_image_file "${SPECIMENS_PATH}/ext4_with_ea_inode.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,ea_inode" "-t ext4";
+
+sudo mount -o loop,rw ${IMAGE_FILE} ${MOUNT_POINT};
+
+sudo chown ${USERNAME} ${MOUNT_POINT};
+
+create_test_file_entries ${MOUNT_POINT};
+
+read -d "" -N 8192 -r LARGE_XATTR_DATA < LICENSE;
+touch ${MOUNT_POINT}/testdir1/large_xattr
+setfattr -n "user.mylargexattr" -v "${LARGE_XATTR_DATA}" ${MOUNT_POINT}/testdir1/large_xattr
+
+sudo umount ${MOUNT_POINT};
+
 # Create an ext4 file system with specific features.
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_64bit.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,64bit" "-t ext4";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_casefold.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,casefold" "-t ext4";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_dir_index.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,dir_index" "-t ext4";
-create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_ea_inode.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,ea_inode" "-t ext4";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_encrypt.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,encrypt" "-t ext4";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_huge_file.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,huge_file" "-t ext4";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_inline_data.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,inline_data" "-t ext4" "-I 256";
