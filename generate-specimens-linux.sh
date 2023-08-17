@@ -260,13 +260,19 @@ create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_inline_dat
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_journal.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-t ext4";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_without_filetype.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^filetype,^has_journal" "-t ext4";
 
+# Create an ext4 file system with block groups
+#   blocks per group (-g)
+#   number of groups (-G)
+create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_block_groups.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-G 4" "-O ^has_journal,flex_bg" "-t ext4";
+
+# Create an ext4 file system with metadata block groups
+create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_metadata_block_group.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,^resize_inode,meta_bg" "-t ext4";
+
 # TODO: create an ext4 file system with extended date and time values
 
 # TODO: create an ext4 file system with specific journal options (-J)
 
 # TODO: create an ext4 file system with a specific cluster size (-C)
-# TODO: create an ext4 file system with a specific blocks per group (-g)
-# TODO: create an ext4 file system with a specific number of groups (-G)
 # TODO: create an ext4 file system with a specific inode size (-i or -I)
 
 # Create ext file systems with many files
