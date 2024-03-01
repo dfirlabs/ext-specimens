@@ -275,6 +275,9 @@ create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_metadata_b
 # TODO: create an ext4 file system with a specific cluster size (-C)
 # TODO: create an ext4 file system with a specific inode size (-i or -I)
 
+# Create an ext4 file system with a specific orphan file size (-E orphan_file_size)
+create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_orphan_file_size.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-E orphan_file_size=1024" "-t ext4";
+
 # Create ext file systems with many files
 for FILE_SYSTEM in ext2 ext3 ext4;
 do
