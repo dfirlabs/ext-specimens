@@ -259,6 +259,8 @@ create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_huge_file.
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_inline_data.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,inline_data" "-t ext4" "-I 256";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_journal.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-t ext4";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_without_filetype.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^filetype,^has_journal" "-t ext4";
+create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_metadata_csum.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,metadata_csum,^64bit" "-t ext4";
+create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_metadata_csum_64bit.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,metadata_csum,64bit" "-t ext4";
 
 # Create an ext4 file system with block groups
 #   blocks per group (-g)
