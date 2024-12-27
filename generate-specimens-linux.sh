@@ -262,13 +262,17 @@ create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_without_filetyp
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_metadata_csum.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,metadata_csum,^64bit" "-t ext4";
 create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_metadata_csum_64bit.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,metadata_csum,64bit" "-t ext4";
 
-# Create an ext4 file system with block groups
-#   blocks per group (-g)
+# Create an ext4 file system with flex block groups
 #   number of groups (-G)
-create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_block_groups.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-G 4" "-O ^has_journal,flex_bg" "-t ext4";
+create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_flex_block_groups.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-G 4" "-O ^has_journal,flex_bg" "-t ext4";
 
 # Create an ext4 file system with metadata block groups
-create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_metadata_block_group.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-O ^has_journal,^resize_inode,meta_bg" "-t ext4";
+#   blocks per group (-g)
+META_BG_IMAGE_SIZE=$(( 64 * 1024 * 1024 ));
+
+export MKE2FS_FIRST_META_BG=1;
+create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_meta_block_group.raw" ${META_BG_IMAGE_SIZE} ${SECTOR_SIZE} "-b 1024" "-g 1024" "-L ext4_test" "-O ^has_journal,^resize_inode,meta_bg" "-t ext4";
+export MKE2FS_FIRST_META_BG=;
 
 # TODO: create an ext4 file system with extended date and time values
 
@@ -376,6 +380,8 @@ truncate -s $(( ( 16 * 1024 * 1024 * 1024 * 1024 ) - ( 2 * 4096 ) )) ${MOUNT_POI
 echo "sparse_16t" >> ${MOUNT_POINT}/sparse_16t;
 
 sudo umount ${MOUNT_POINT};
+
+# TODO: create an ext4 file system where the order of logical block numbers of the extents of testdir1/TestFile2 is reversed
 
 exit ${EXIT_SUCCESS};
 
