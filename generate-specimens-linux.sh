@@ -171,11 +171,16 @@ export MKE2FS_FIRST_META_BG=
 # TODO: create an ext4 file system with a specific cluster size (-C)
 # TODO: create an ext4 file system with a specific inode size (-i or -I)
 
-# Note that orphan_file_size should be less than 1024
-ORPHAN_FILE_SIZE=123
+MINIMUM_VERSION=$( echo "${VERSION} 1.47.0" | tr ' ' '\n' | sort -V | head -n 1 )
 
-echo "Creating: ext4; with: orphan file size: ${ORPHAN_FILE_SIZE}; without feature: journal, resize_inode"
-create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_orphan_file_size.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-E orphan_file_size=${ORPHAN_FILE_SIZE}" "-O ^has_journal" "-t ext4"
+if test "${MINIMUM_VERSION}" = "1.47.0"
+then
+	# Note that orphan_file_size should be less than 1024
+	ORPHAN_FILE_SIZE=123
+
+	echo "Creating: ext4; with: orphan file size: ${ORPHAN_FILE_SIZE}; without feature: journal, resize_inode"
+	create_test_image_file_with_file_entries "${SPECIMENS_PATH}/ext4_with_orphan_file_size.raw" ${IMAGE_SIZE} ${SECTOR_SIZE} "-L ext4_test" "-E orphan_file_size=${ORPHAN_FILE_SIZE}" "-O ^has_journal" "-t ext4"
+fi
 
 # Create ext file systems that contains large nearly sparse files
 IMAGE_SIZE=$(( 1 * 1024 * 1024 ))

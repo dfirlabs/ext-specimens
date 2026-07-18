@@ -35,7 +35,6 @@ sudo mkdir -p ${MOUNT_POINT}
 
 SECTOR_SIZE=512
 
-# Create ext file systems with many files
 for FILE_SYSTEM in ext2 ext3 ext4
 do
 	for NUMBER_OF_FILES in 100 1000 10000 100000

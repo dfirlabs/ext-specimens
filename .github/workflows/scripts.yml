@@ -7,8 +7,11 @@ permissions: read-all
 jobs:
   run_scripts_linux:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu-version: ['20.04', '24.04']
     container:
-      image: ubuntu:26.04
+      image: ubuntu:${{ matrix.ubuntu-version }}
       options: --privileged
     steps:
     - uses: actions/checkout@v6
